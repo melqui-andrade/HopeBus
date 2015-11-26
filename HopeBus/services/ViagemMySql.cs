@@ -40,6 +40,38 @@ namespace HopeBus.services
             }
         }
 
+        public ViagemDomain ObtemViagem(String origem, String destino, String horario)
+        {
+            using (MySqlConnection conexao = new MySqlConnection(stringDeConexao))
+            {
+                conexao.Open();
+                MySqlCommand comando = new MySqlCommand("SELECT * FROM viagem WHERE origem=@origem "+
+                "AND destino=@destino AND horario=@horario");
+                comando.Parameters.Add("origem", origem);
+                comando.Parameters.Add("destino", destino);
+                comando.Parameters.Add("horario", horario);
+                comando.Connection = conexao;
+                try
+                {
+                    MySqlDataReader reader = comando.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        ViagemDomain viagem = new ViagemDomain(reader);
+                        return viagem;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.Error.WriteLine(e);
+                }
+                finally
+                {
+                    comando.Connection.Close();
+                }
+                return null;
+            }
+        }
+
         public List<ViagemDomain> ObtemViagens()
         {
             using (MySqlConnection conexao = new MySqlConnection(stringDeConexao))

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HopeBus.domain
 {
-    class VendedorDomain
+    public class VendedorDomain
     {
         public int ID { get; set; }
 

@@ -19,6 +19,16 @@ namespace HopeBus.presentation.Vendedor.EmitirPassagem
             InitializeComponent();
         }
 
+        private void EmitirPassagemView_Load(object sender, EventArgs e)
+        {
+            ViagemMySql viagemMySql = new ViagemMySql();
+            List<ViagemDomain> viagens = viagemMySql.ObtemViagens();
+            ajustaCamposDoTrajeto(viagens);
+            ajustaCoresDasPoltronas();
+
+        }
+
+
         private void btnVoltar_Click(object sender, EventArgs e)
         {
             IndexVendedorView indexVendedorView = new IndexVendedorView();
@@ -27,10 +37,14 @@ namespace HopeBus.presentation.Vendedor.EmitirPassagem
             indexVendedorView.Show();
         }
 
-        private void EmitirPassagemView_Load(object sender, EventArgs e)
+
+        private void btnAvancar_Click(object sender, EventArgs e)
         {
-            ViagemMySql viagemMySql = new ViagemMySql();
-            List<ViagemDomain> viagens = viagemMySql.ObtemViagens();
+
+        }
+
+        private void ajustaCamposDoTrajeto(List<ViagemDomain> viagens)
+        {
             if (viagens.Count > 0)
             {
                 foreach (ViagemDomain viagem in viagens)
@@ -40,12 +54,6 @@ namespace HopeBus.presentation.Vendedor.EmitirPassagem
                     comboBoxHorario.Items.Add(viagem.Horario.TimeOfDay);
                 }
             }
-
-        }
-
-        private void btnAvancar_Click(object sender, EventArgs e)
-        {
-
         }
 
         private bool formEstaOk()
@@ -66,6 +74,67 @@ namespace HopeBus.presentation.Vendedor.EmitirPassagem
             //Poltrona
 
             return true;
+        }
+
+        private void ajustaCoresDasPoltronas()
+        {
+            int i = 1;
+            foreach (Button control in panelPoltronas.Controls.Cast<Button>().OrderBy(b => b.Right))
+            {
+                
+                    Button button = (Button)control;
+                    button.Text = Convert.ToString(i);
+                    button.BackColor = Color.FromArgb(255, 39, 174, 97);
+                    i++;
+                
+            }
+        }
+
+        private void comboBoxOrigem_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBoxOrigem.Text == comboBoxDestino.Text)
+            {
+                int i = comboBoxDestino.Items.Count - 1;
+                while (comboBoxOrigem.Text == comboBoxDestino.Text)
+                {
+                    comboBoxDestino.SelectedIndex = i;
+                    i--;
+                }
+            }
+        }
+
+        private void comboBoxDestino_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBoxOrigem.Text == comboBoxDestino.Text)
+            {
+                int i = comboBoxOrigem.Items.Count - 1;
+                while (comboBoxOrigem.Text == comboBoxDestino.Text)
+                {
+                    comboBoxOrigem.SelectedIndex = i;
+                    i--;
+                }
+            }
+        }
+
+        private void AbasEmitirPassagem_TabIndexChanged(object sender, EventArgs e)
+        {
+            TabControl abas = (TabControl)sender;
+            if (abas.SelectedIndex == 2)
+            {
+                if (formEstaOk())
+                {
+                    String origem = comboBoxOrigem.Text;
+                    String destino = comboBoxDestino.Text;
+                    String horario = comboBoxHorario.Text;
+                    ViagemMySql viagemMySql = new ViagemMySql();
+                    ViagemDomain viagem = viagemMySql.ObtemViagem(origem, destino, horario);
+
+                    if (viagem != null)
+                    {
+
+                    }
+                }
+            }
         }
     }
 }
