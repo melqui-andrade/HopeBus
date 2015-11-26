@@ -146,6 +146,7 @@ namespace HopeBus.services
                 {
                     comando.CommandText = "INSERT INTO vendedor(cep,cpf,endereco,identidade,nome) VALUES(" +
                         "@cep,@cpf,@endereco,@identidade,@nome);SELECT LAST_INSERT_ID();";
+
                     comando.Parameters.Add(new MySqlParameter("cep", vendedor.Cep));
                     comando.Parameters.Add(new MySqlParameter("cpf", vendedor.CPF));
                     comando.Parameters.Add(new MySqlParameter("endereco", vendedor.Endereco));

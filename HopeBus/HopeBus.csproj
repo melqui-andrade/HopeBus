@@ -94,6 +94,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="services\MySqlBase.cs" />
+    <Compile Include="services\VendedorMySql.cs" />
     <Compile Include="services\ViagemMySql.cs" />
     <EmbeddedResource Include="presentation\index\CreditosView.resx">
       <DependentUpon>CreditosView.cs</DependentUpon>
