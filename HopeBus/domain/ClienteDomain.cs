@@ -9,17 +9,17 @@ namespace HopeBus.domain
 {
     class ClienteDomain
     {
-        int ID { get; set; }
+        public int ID { get; set; }
 
-        String Nome { get; set; }
+        public String Nome { get; set; }
 
-        String Identidade { get; set; }
+        public String Identidade { get; set; }
 
-        String CPF { get; set; }
+        public String CPF { get; set; }
 
-        String Telefone { get; set; }
+        public String Telefone { get; set; }
 
-        EnumTipo Tipo { get; set; }
+        public EnumTipo Tipo { get; set; }
 
         public ClienteDomain() { }
 
