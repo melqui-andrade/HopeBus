@@ -42,5 +42,30 @@ namespace HopeBus.presentation.Vendedor.EmitirPassagem
             }
 
         }
+
+        private void btnAvancar_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private bool formEstaOk()
+        {
+            //Dados da viagem
+            StringBuilder mensagemErro = new StringBuilder();
+            if(String.IsNullOrEmpty(comboBoxOrigem.Text) || String.IsNullOrEmpty(comboBoxDestino.Text) ||
+                String.IsNullOrEmpty(comboBoxHorario.Text))
+            {
+                return false;
+            }
+            //Dados do passageiro
+            else if(String.IsNullOrEmpty(campoNome.Text) || String.IsNullOrEmpty(campoCPF.Text) ||
+                String.IsNullOrEmpty(campoRG.Text))
+            {
+                return false;
+            }
+            //Poltrona
+
+            return true;
+        }
     }
 }
