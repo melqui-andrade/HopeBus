@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HopeBus.domain
 {
-    class Cliente
+    class ClienteDomain
     {
         int ID { get; set; }
 
