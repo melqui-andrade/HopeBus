@@ -1,22 +1,21 @@
 ﻿using HopeBus.domain;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data;
-using MySql.Data.MySqlClient;
 
 namespace HopeBus.services
 {
-    public class ViagemMySql : MySqlBase
+    class PassagemMySql : MySqlBase
     {
-        public ViagemDomain ObtemViagem(int id)
+        public PassagemDomain ObtemPassagem(int id)
         {
             using (MySqlConnection conexao = new MySqlConnection(stringDeConexao))
             {
                 conexao.Open();
-                MySqlCommand comando = new MySqlCommand("SELECT * FROM viagem WHERE id=@id;");
+                MySqlCommand comando = new MySqlCommand("SELECT * FROM passagem WHERE id=@id;");
                 comando.Parameters.Add("id", id);
                 comando.Connection = conexao;
                 try
@@ -24,8 +23,8 @@ namespace HopeBus.services
                     MySqlDataReader reader = comando.ExecuteReader();
                     while (reader.Read())
                     {
-                        ViagemDomain viagem = new ViagemDomain(reader);
-                        return viagem;
+                        PassagemDomain passagem = new PassagemDomain(reader);
+                        return passagem;
                     }
                 }
                 catch (Exception e)
@@ -40,23 +39,23 @@ namespace HopeBus.services
             }
         }
 
-        public List<ViagemDomain> ObtemViagens()
+        public List<PassagemDomain> ObtemPassagens()
         {
             using (MySqlConnection conexao = new MySqlConnection(stringDeConexao))
             {
                 conexao.Open();
-                MySqlCommand comando = new MySqlCommand("SELECT * FROM viagem;");
+                MySqlCommand comando = new MySqlCommand("SELECT * FROM passagem;");
                 comando.Connection = conexao;
                 try
                 {
                     MySqlDataReader reader = comando.ExecuteReader();
-                    List<ViagemDomain> viagens = new List<ViagemDomain>();
+                    List<PassagemDomain> passagens = new List<PassagemDomain>();
                     while (reader.Read())
                     {
-                        ViagemDomain viagem = new ViagemDomain(reader);
-                        viagens.Add(viagem);
+                        PassagemDomain passagem = new PassagemDomain(reader);
+                        passagens.Add(passagem);
                     }
-                    return viagens;
+                    return passagens;
                 }
                 catch (Exception e)
                 {
@@ -71,21 +70,32 @@ namespace HopeBus.services
         }
 
         /// <summary>
-        /// Busca Viagens que possuam o parâmetro passado em qualquer um dos campos
-        /// de viagem
+        /// Busca Passagens que possuam o parâmetro passado em qualquer um dos campos
+        /// de viagem ou de cliente e na própria passagem
         /// </summary>
         /// <param name="parametro">Texto que deseja procurar</param>
-        /// <returns>Lista de viagens que satisfaçam a busca</returns>
-        public List<ViagemDomain> BuscaViagens(String parametro)
+        /// <returns>Lista de passagens que satisfaçam a busca</returns>
+        public List<ViagemDomain> BuscaPassagens(String parametro)
         {
             using (MySqlConnection conexao = new MySqlConnection(stringDeConexao))
             {
                 conexao.Open();
                 
-                StringBuilder querry = new StringBuilder("SELECT * FROM viagem WHERE");
-                querry.Append(" origem=@parametro OR");
-                querry.Append(" destino=@parametro OR");
-                querry.Append(" horario=@parametro;");
+                StringBuilder querry = new StringBuilder("SELECT p.* FROM passagem p");
+
+                querry.Append(" INNER JOIN cliente_passagem cp ON p.id = cp.id_passagem");
+                querry.Append(" INNER JOIN cliente c ON cp.id_cliente = c.id");
+                querry.Append(" WHERE c.nome = @parametro OR c.cpf = @parametro");
+                querry.Append(" OR c.identidade = @parametro OR c.tipo = @parametro;");
+
+                //Pesquisar passagens relacionadas a viagem
+                querry.Append(" INNER JOIN passagem_viagem pv  ON p.id = pv.id_passagem");
+                querry.Append(" INNER JOIN viagem v ON pv.id_viagem = v.id");
+                querry.Append(" WHERE v.origem = @parametro OR v.destino = @parametro");
+                querry.Append(" OR v.horario = @parametro");
+
+                //Pesquisar de acordo com as colunas da passagem
+                querry.Append(" OR p.data = @parametro;");
 
                 MySqlCommand comando = new MySqlCommand(querry.ToString());
                 comando.Parameters.Add("parametro", parametro);
@@ -113,20 +123,20 @@ namespace HopeBus.services
             }
         }
 
-        public void SalvaViagem(ViagemDomain viagem)
+        public void SalvaPassagem(PassagemDomain passagem)
         {
             using (MySqlConnection conexao = new MySqlConnection(stringDeConexao))
             {
                 conexao.Open();
                 MySqlCommand comando = new MySqlCommand();
-                //Viagem possui um ID, logo se trata de um update
-                if (viagem.ID > 0)
+                //Passagem possui um ID, logo se trata de um update
+                if (passagem.ID > 0)
                 {
-                    comando.CommandText = "UPDATE viagem SET origem=@origem,destino=@destino,horario=@horario WHERE id=@id;";
-                    comando.Parameters.Add(new MySqlParameter("origem", viagem.Origem));
-                    comando.Parameters.Add(new MySqlParameter("destino", viagem.Destino));
-                    comando.Parameters.Add(new MySqlParameter("horario", viagem.Horario));
-                    comando.Parameters.Add(new MySqlParameter("id", viagem.ID));
+                    comando.CommandText = "UPDATE passagem SET valor=@valor,data=@data,poltrona=@poltrona WHERE id=@id;";
+                    comando.Parameters.Add(new MySqlParameter("valor", passagem.Valor));
+                    comando.Parameters.Add(new MySqlParameter("data", passagem.Data));
+                    comando.Parameters.Add(new MySqlParameter("poltrona", passagem.Poltrona));
+                    comando.Parameters.Add(new MySqlParameter("id", passagem.ID));
 
                     comando.Connection = conexao;
                     try
@@ -139,19 +149,20 @@ namespace HopeBus.services
                     }
                     finally { comando.Connection.Close(); }
                 }
-                //Viagem não possui um ID, logo se trata de uma insersão
+                //Passagem não possui um ID, logo se trata de uma insersão
                 else
                 {
-                    comando.CommandText = "INSERT INTO viagem(origem,destino,horario) VALUES(" +
-                        "@origem,@destino,@horario);SELECT LAST_INSERT_ID();";
-                    comando.Parameters.Add(new MySqlParameter("origem", viagem.Origem));
-                    comando.Parameters.Add(new MySqlParameter("destino", viagem.Destino));
-                    comando.Parameters.Add(new MySqlParameter("horario", viagem.Horario));
+                    comando.CommandText = "INSERT INTO passagem(valor,data,poltrona) VALUES(" +
+                        "@valor,@data,@poltrona);SELECT LAST_INSERT_ID();";
+                    comando.Parameters.Add(new MySqlParameter("valor", passagem.Valor));
+                    comando.Parameters.Add(new MySqlParameter("data", passagem.Data));
+                    comando.Parameters.Add(new MySqlParameter("poltrona", passagem.Poltrona));
+                    comando.Parameters.Add(new MySqlParameter("id", passagem.ID));
 
                     comando.Connection = conexao;
                     try
                     {
-                        viagem.ID = Convert.ToInt32(comando.ExecuteScalar());
+                        passagem.ID = Convert.ToInt32(comando.ExecuteScalar());
                     }
                     catch (Exception e)
                     {
@@ -161,12 +172,12 @@ namespace HopeBus.services
             }
         }
 
-        public void ExcluiViagem(int id)
+        public void ExcluiPassagem(int id)
         {
             using (MySqlConnection conexao = new MySqlConnection(stringDeConexao))
             {
                 conexao.Open();
-                MySqlCommand comando = new MySqlCommand("DELETE FROM viagem WHERE id=@id;");
+                MySqlCommand comando = new MySqlCommand("DELETE FROM passagem WHERE id=@id;");
                 comando.Parameters.Add(new MySqlParameter("id", id));
 
                 comando.Connection = conexao;
@@ -181,35 +192,5 @@ namespace HopeBus.services
                 finally { comando.Connection.Close(); }
             }
         }
-
-        //Exclui tudo fica melhor fora, pois além de excluir viagem, precisa excluir passagens relacionadas
-        //public void ExcluiViagens()
-        //{
-        //    using (MySqlConnection conexao = new MySqlConnection(stringDeConexao))
-        //    {
-        //        conexao.Open();
-        //        MySqlCommand comando = new MySqlCommand("SELECT * FROM viagem;");
-
-        //        comando.Connection = conexao;
-        //        try
-        //        {
-        //            MySqlDataReader reader = comando.ExecuteReader();
-        //            StringBuilder querryDeletar = new StringBuilder();
-        //            while (reader.Read())
-        //            {
-        //                querryDeletar.Append("DELETE FROM viagem WHERE id=" + reader["id"] + ";");
-        //            }
-
-        //            comando.CommandText = querryDeletar.ToString();
-        //            comando.ExecuteNonQuery();
-                    
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            Console.Error.WriteLine(e);
-        //        }
-        //        finally { comando.Connection.Close(); }
-        //    }
-        //}
     }
 }
