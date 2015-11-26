@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,12 +9,22 @@ namespace HopeBus.domain
 {
     class PassagemDomain
     {
-        int ID { get; set; }
+        public int ID { get; set; }
 
-        double Valor { get; set; }
+        public double Valor { get; set; }
 
-        DateTime Data { get; set; }
+        public DateTime Data { get; set; }
 
-        int Poltrona { get; set; }
+        public int Poltrona { get; set; }
+
+        public PassagemDomain() { }
+
+        public PassagemDomain(MySqlDataReader reader)
+        {
+            ID = (int)reader["id"];
+            Valor = (double)reader["valor"];
+            Data = (DateTime)reader["data"];
+            Poltrona = (int)reader["poltrona"];
+        }
     }
 }

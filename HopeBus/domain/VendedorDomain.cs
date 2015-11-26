@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,5 +25,18 @@ namespace HopeBus.domain
 
         public String Cep { get; set; }
 
+        public VendedorDomain() { }
+
+        public VendedorDomain(MySqlDataReader reader)
+        {
+            ID = (int)reader["id"];
+            Nome = (String)reader["nome"];
+            Login = (String)reader["login"];
+            Senha = (String)reader["senha"];
+            Identidade = (String)reader["identidade"];
+            CPF = (String)reader["cpf"];
+            Endereco = (String)reader["endereco"];
+            Cep = (String)reader["cep"];
+        }
     }
 }
