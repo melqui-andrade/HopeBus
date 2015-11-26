@@ -51,6 +51,7 @@ namespace HopeBus.services
                 {
                     MySqlDataReader reader = comando.ExecuteReader();
                     List<ViagemDomain> viagens = new List<ViagemDomain>();
+                    
                     while (reader.Read())
                     {
                         ViagemDomain viagem = new ViagemDomain(reader);

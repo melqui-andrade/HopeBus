@@ -44,5 +44,10 @@ namespace HopeBus.presentation.Vendedor
             alterarAgendamentoView.Closed += (s, args) => this.Close();
             alterarAgendamentoView.Show();
         }
+
+        private void btnConsultarAgendamento_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

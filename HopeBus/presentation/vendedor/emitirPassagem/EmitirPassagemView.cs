@@ -1,4 +1,6 @@
-﻿using System;
+﻿using HopeBus.domain;
+using HopeBus.services;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -23,6 +25,22 @@ namespace HopeBus.presentation.Vendedor.EmitirPassagem
             this.Hide();
             indexVendedorView.Closed += (s, args) => this.Close();
             indexVendedorView.Show();
+        }
+
+        private void EmitirPassagemView_Load(object sender, EventArgs e)
+        {
+            ViagemMySql viagemMySql = new ViagemMySql();
+            List<ViagemDomain> viagens = viagemMySql.ObtemViagens();
+            if (viagens.Count > 0)
+            {
+                foreach (ViagemDomain viagem in viagens)
+                {
+                    comboBoxOrigem.Items.Add(viagem.Origem);
+                    comboBoxDestino.Items.Add(viagem.Destino);
+                    comboBoxHorario.Items.Add(viagem.Horario.TimeOfDay);
+                }
+            }
+
         }
     }
 }

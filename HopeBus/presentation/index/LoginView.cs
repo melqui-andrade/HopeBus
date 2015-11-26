@@ -21,11 +21,18 @@ namespace HopeBus
 
         private void btnEntrar_Click(object sender, EventArgs e)
         {
-            IndexVendedorView indexVendedorView = new IndexVendedorView();
-            this.Hide();
-            indexVendedorView.Closed += (s, args) => this.Close(); 
-            indexVendedorView.Show();
-           
+            if (loginEstaOk())
+            {
+                labelMensagem.Text = "";
+                IndexVendedorView indexVendedorView = new IndexVendedorView();
+                this.Hide();
+                indexVendedorView.Closed += (s, args) => this.Close();
+                indexVendedorView.Show();
+            }
+            else
+            {
+                labelMensagem.Text = "*Usuário ou senha não conferem";
+            }
         }
 
         private void linkContato_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -34,6 +41,16 @@ namespace HopeBus
             this.Hide();
             creditosView.Closed += (s, args) => this.Close();
             creditosView.Show();
+        }
+
+        private bool loginEstaOk()
+        {
+            if(String.IsNullOrEmpty(campoUsuario.Text) || String.IsNullOrEmpty(campoSenha.Text))
+            {
+                return false;            
+            }
+            //else if( usuario e senha estao corretos)
+            return true;
         }
     }
 }

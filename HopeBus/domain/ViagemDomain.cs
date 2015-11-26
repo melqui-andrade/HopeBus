@@ -7,7 +7,7 @@ using MySql.Data.MySqlClient;
 
 namespace HopeBus.domain
 {
-    class ViagemDomain
+    public class ViagemDomain
     {
         public int ID { get; set; }
 
@@ -24,7 +24,8 @@ namespace HopeBus.domain
             ID = (int)reader["id"];
             Origem = (String)reader["origem"];
             Destino = (String)reader["destino"];
-            Horario = (DateTime)reader["horario"];
+            Horario = DateTime.Parse(reader["horario"].ToString());
+            
         }
     }
 }

@@ -253,8 +253,6 @@
             this.comboBoxHorario.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBoxHorario.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
             this.comboBoxHorario.FormattingEnabled = true;
-            this.comboBoxHorario.Items.AddRange(new object[] {
-            "7:00h"});
             this.comboBoxHorario.Location = new System.Drawing.Point(320, 264);
             this.comboBoxHorario.Name = "comboBoxHorario";
             this.comboBoxHorario.Size = new System.Drawing.Size(374, 38);
@@ -281,8 +279,6 @@
             this.comboBoxDestino.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBoxDestino.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
             this.comboBoxDestino.FormattingEnabled = true;
-            this.comboBoxDestino.Items.AddRange(new object[] {
-            "Campina Grande"});
             this.comboBoxDestino.Location = new System.Drawing.Point(320, 174);
             this.comboBoxDestino.Name = "comboBoxDestino";
             this.comboBoxDestino.Size = new System.Drawing.Size(374, 38);
@@ -309,8 +305,6 @@
             this.comboBoxOrigem.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBoxOrigem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
             this.comboBoxOrigem.FormattingEnabled = true;
-            this.comboBoxOrigem.Items.AddRange(new object[] {
-            "Esperança"});
             this.comboBoxOrigem.Location = new System.Drawing.Point(320, 87);
             this.comboBoxOrigem.Name = "comboBoxOrigem";
             this.comboBoxOrigem.Size = new System.Drawing.Size(374, 38);
@@ -667,6 +661,7 @@
             this.Name = "EmitirPassagemView";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "HopeBus - Emitir Passagem";
+            this.Load += new System.EventHandler(this.EmitirPassagemView_Load);
             this.panelTop.ResumeLayout(false);
             this.panelTop.PerformLayout();
             this.panelBottom.ResumeLayout(false);

@@ -33,6 +33,7 @@ namespace HopeBus
             this.labelVendaDePassagensDeOnibus = new System.Windows.Forms.Label();
             this.labelHopeBus = new System.Windows.Forms.Label();
             this.panelBottom = new System.Windows.Forms.Panel();
+            this.linkContato = new System.Windows.Forms.LinkLabel();
             this.iconSenha = new System.Windows.Forms.Label();
             this.iconUsuario = new System.Windows.Forms.Label();
             this.btnEntrar = new System.Windows.Forms.Button();
@@ -41,7 +42,7 @@ namespace HopeBus
             this.campoSenha = new System.Windows.Forms.TextBox();
             this.campoUsuario = new System.Windows.Forms.TextBox();
             this.panelBackground = new System.Windows.Forms.Panel();
-            this.linkContato = new System.Windows.Forms.LinkLabel();
+            this.labelMensagem = new System.Windows.Forms.Label();
             this.panelTop.SuspendLayout();
             this.panelBottom.SuspendLayout();
             this.SuspendLayout();
@@ -87,6 +88,7 @@ namespace HopeBus
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelBottom.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(240)))), ((int)(((byte)(241)))));
+            this.panelBottom.Controls.Add(this.labelMensagem);
             this.panelBottom.Controls.Add(this.linkContato);
             this.panelBottom.Controls.Add(this.iconSenha);
             this.panelBottom.Controls.Add(this.iconUsuario);
@@ -100,6 +102,21 @@ namespace HopeBus
             this.panelBottom.Name = "panelBottom";
             this.panelBottom.Size = new System.Drawing.Size(1189, 419);
             this.panelBottom.TabIndex = 2;
+            // 
+            // linkContato
+            // 
+            this.linkContato.ActiveLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(160)))), ((int)(((byte)(134)))));
+            this.linkContato.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.linkContato.AutoSize = true;
+            this.linkContato.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
+            this.linkContato.Location = new System.Drawing.Point(12, 394);
+            this.linkContato.Name = "linkContato";
+            this.linkContato.Size = new System.Drawing.Size(491, 13);
+            this.linkContato.TabIndex = 8;
+            this.linkContato.TabStop = true;
+            this.linkContato.Text = "HopeBus - Venda de Passagens de Ônibus Ⓡ Daniel Marques. Melquisedec Andrade, Sid" +
+    "ney Pimentel";
+            this.linkContato.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkContato_LinkClicked);
             // 
             // iconSenha
             // 
@@ -196,20 +213,15 @@ namespace HopeBus
             this.panelBackground.Size = new System.Drawing.Size(1184, 661);
             this.panelBackground.TabIndex = 2;
             // 
-            // linkContato
+            // labelMensagem
             // 
-            this.linkContato.ActiveLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(160)))), ((int)(((byte)(134)))));
-            this.linkContato.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.linkContato.AutoSize = true;
-            this.linkContato.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
-            this.linkContato.Location = new System.Drawing.Point(12, 394);
-            this.linkContato.Name = "linkContato";
-            this.linkContato.Size = new System.Drawing.Size(491, 13);
-            this.linkContato.TabIndex = 8;
-            this.linkContato.TabStop = true;
-            this.linkContato.Text = "HopeBus - Venda de Passagens de Ônibus Ⓡ Daniel Marques. Melquisedec Andrade, Sid" +
-    "ney Pimentel";
-            this.linkContato.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkContato_LinkClicked);
+            this.labelMensagem.AutoSize = true;
+            this.labelMensagem.Font = new System.Drawing.Font("Segoe UI Symbol", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelMensagem.ForeColor = System.Drawing.Color.Red;
+            this.labelMensagem.Location = new System.Drawing.Point(455, 309);
+            this.labelMensagem.Name = "labelMensagem";
+            this.labelMensagem.Size = new System.Drawing.Size(0, 15);
+            this.labelMensagem.TabIndex = 9;
             // 
             // LoginView
             // 
@@ -247,6 +259,7 @@ namespace HopeBus
         private System.Windows.Forms.Label iconUsuario;
         private System.Windows.Forms.Panel panelBackground;
         private System.Windows.Forms.LinkLabel linkContato;
+        private System.Windows.Forms.Label labelMensagem;
     }
 }
 
