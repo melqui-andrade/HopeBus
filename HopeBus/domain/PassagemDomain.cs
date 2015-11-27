@@ -22,8 +22,8 @@ namespace HopeBus.domain
         public PassagemDomain(MySqlDataReader reader)
         {
             ID = (int)reader["id"];
-            Valor = (double)reader["valor"];
-            Data = (DateTime)reader["data"];
+            Valor = Convert.ToDouble(reader["valor"]);
+            Data = DateTime.Parse(reader["data"].ToString());
             Poltrona = (int)reader["poltrona"];
         }
     }

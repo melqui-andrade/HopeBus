@@ -14,6 +14,11 @@ namespace HopeBus.presentation.Vendedor.EmitirPassagem
 {
     public partial class EmitirPassagemView : Form
     {
+        Color _corLivre = Color.FromArgb(255, 39, 174, 97);
+        Color _corOcupado = Color.FromArgb(255, 232, 76, 61);
+        Color _corSelecionado = Color.FromArgb(255, 234, 156, 17);
+        String _ultimaPoltronaSelecionada = "0";
+
         public EmitirPassagemView()
         {
             InitializeComponent();
@@ -23,8 +28,7 @@ namespace HopeBus.presentation.Vendedor.EmitirPassagem
         {
             ViagemMySql viagemMySql = new ViagemMySql();
             List<ViagemDomain> viagens = viagemMySql.ObtemViagens();
-            ajustaCamposDoTrajeto(viagens);
-            ajustaCoresDasPoltronas();
+            ajustaCamposDoTrajeto(viagens);            
 
         }
 
@@ -54,41 +58,7 @@ namespace HopeBus.presentation.Vendedor.EmitirPassagem
                     comboBoxHorario.Items.Add(viagem.Horario.TimeOfDay);
                 }
             }
-        }
-
-        private bool formEstaOk()
-        {
-            //Dados da viagem
-            StringBuilder mensagemErro = new StringBuilder();
-            if(String.IsNullOrEmpty(comboBoxOrigem.Text) || String.IsNullOrEmpty(comboBoxDestino.Text) ||
-                String.IsNullOrEmpty(comboBoxHorario.Text))
-            {
-                return false;
-            }
-            //Dados do passageiro
-            else if(String.IsNullOrEmpty(campoNome.Text) || String.IsNullOrEmpty(campoCPF.Text) ||
-                String.IsNullOrEmpty(campoRG.Text))
-            {
-                return false;
-            }
-            //Poltrona
-
-            return true;
-        }
-
-        private void ajustaCoresDasPoltronas()
-        {
-            int i = 1;
-            foreach (Button control in panelPoltronas.Controls.Cast<Button>().OrderBy(b => b.Right))
-            {
-                
-                    Button button = (Button)control;
-                    button.Text = Convert.ToString(i);
-                    button.BackColor = Color.FromArgb(255, 39, 174, 97);
-                    i++;
-                
-            }
-        }
+        }        
 
         private void comboBoxOrigem_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -116,6 +86,21 @@ namespace HopeBus.presentation.Vendedor.EmitirPassagem
             }
         }
 
+        private void btnPoltrona_Click(object sender, EventArgs e)
+        {
+            Button poltrona = (Button)sender;
+            if (poltrona.BackColor.Equals(_corLivre))
+            {
+                poltrona.BackColor = _corSelecionado;
+                if (_ultimaPoltronaSelecionada != "0")
+                {
+                    Button ultimo = panelPoltronas.Controls.Cast<Button>().Single(b => b.Text == _ultimaPoltronaSelecionada);
+                    ultimo.BackColor = _corLivre;
+                }
+                _ultimaPoltronaSelecionada = poltrona.Text;
+            }
+        }
+
         private void AbasEmitirPassagem_TabIndexChanged(object sender, EventArgs e)
         {
             TabControl abas = (TabControl)sender;
@@ -127,13 +112,57 @@ namespace HopeBus.presentation.Vendedor.EmitirPassagem
                     String destino = comboBoxDestino.Text;
                     String horario = comboBoxHorario.Text;
                     ViagemMySql viagemMySql = new ViagemMySql();
+                    PassagemMySql passagemMySql = new PassagemMySql();
                     ViagemDomain viagem = viagemMySql.ObtemViagem(origem, destino, horario);
 
-                    if (viagem != null)
+                    if (viagem != null && viagem.ID > 0)
                     {
-
+                        List<PassagemDomain> passagensCompradas = passagemMySql.BuscaPassagensDaViagem(viagem.ID);
+                        ajustaCoresDasPoltronas(passagensCompradas);    
                     }
                 }
+            }
+        }
+
+        private bool formEstaOk()
+        {
+            //Dados da viagem
+            StringBuilder mensagemErro = new StringBuilder();
+            if (String.IsNullOrEmpty(comboBoxOrigem.Text) || String.IsNullOrEmpty(comboBoxDestino.Text) ||
+                String.IsNullOrEmpty(comboBoxHorario.Text))
+            {
+                return false;
+            }
+            //Dados do passageiro
+            else if (String.IsNullOrEmpty(campoNome.Text) || String.IsNullOrEmpty(campoCPF.Text) ||
+                String.IsNullOrEmpty(campoRG.Text))
+            {
+                return false;
+            }
+            //Poltrona
+
+            return true;
+        }
+
+        private void ajustaCoresDasPoltronas(List<PassagemDomain> passagensCompradas)
+        {
+            int i = 1;
+            List<Button> poltronas = panelPoltronas.Controls.Cast<Button>().OrderBy(b => b.Right).ToList();
+            
+
+            foreach (Button control in poltronas)
+            {                
+                Button poltrona = (Button)control;
+                poltrona.Text = Convert.ToString(i);
+                poltrona.BackColor = _corLivre;
+                poltrona.Click += btnPoltrona_Click;
+                i++;
+            }
+            foreach (PassagemDomain passagem in passagensCompradas)
+            {
+                String numPoltrona = Convert.ToString(passagem.Poltrona);
+                Button poltrona = poltronas.Find(b => b.Text == numPoltrona);
+                poltrona.BackColor = _corOcupado;
             }
         }
     }

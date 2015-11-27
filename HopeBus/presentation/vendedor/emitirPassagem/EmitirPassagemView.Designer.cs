@@ -219,7 +219,7 @@
             this.AbasEmitirPassagem.SelectedIndex = 0;
             this.AbasEmitirPassagem.Size = new System.Drawing.Size(980, 408);
             this.AbasEmitirPassagem.TabIndex = 0;
-            this.AbasEmitirPassagem.TabIndexChanged += new System.EventHandler(this.AbasEmitirPassagem_TabIndexChanged);
+            this.AbasEmitirPassagem.SelectedIndexChanged += new System.EventHandler(this.AbasEmitirPassagem_TabIndexChanged);
             // 
             // abaDestino
             // 

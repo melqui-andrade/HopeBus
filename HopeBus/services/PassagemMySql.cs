@@ -123,6 +123,42 @@ namespace HopeBus.services
             }
         }
 
+        public List<PassagemDomain> BuscaPassagensDaViagem(int idViagem)
+        {
+            using (MySqlConnection conexao = new MySqlConnection(stringDeConexao))
+            {
+                conexao.Open();
+
+                StringBuilder querry = new StringBuilder("SELECT p.* FROM passagem p");
+                querry.Append(" INNER JOIN passagem_viagem pv  ON p.id = pv.id_passagem");
+                querry.Append(" WHERE pv.id_viagem=@id_viagem;");
+
+                MySqlCommand comando = new MySqlCommand(querry.ToString());
+                comando.Parameters.Add("id_viagem", idViagem);
+                comando.Connection = conexao;
+                try
+                {
+                    MySqlDataReader reader = comando.ExecuteReader();
+                    List<PassagemDomain> passagens = new List<PassagemDomain>();
+                    while (reader.Read())
+                    {
+                        PassagemDomain passagem = new PassagemDomain(reader);
+                        passagens.Add(passagem);
+                    }
+                    return passagens;
+                }
+                catch (Exception e)
+                {
+                    Console.Error.WriteLine(e);
+                }
+                finally
+                {
+                    comando.Connection.Close();
+                }
+                return null;
+            }
+        }
+
         public void SalvaPassagem(PassagemDomain passagem)
         {
             using (MySqlConnection conexao = new MySqlConnection(stringDeConexao))
