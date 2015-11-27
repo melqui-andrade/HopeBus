@@ -1,5 +1,6 @@
 ﻿using HopeBus.presentation.index;
 using HopeBus.presentation.Vendedor;
+using HopeBus.services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -45,12 +46,24 @@ namespace HopeBus
 
         private bool loginEstaOk()
         {
-            if(String.IsNullOrEmpty(campoUsuario.Text) || String.IsNullOrEmpty(campoSenha.Text))
+            if (String.IsNullOrEmpty(campoUsuario.Text) || String.IsNullOrEmpty(campoSenha.Text))
             {
-                return false;            
+                return false;
             }
-            //else if( usuario e senha estao corretos)
-            return true;
+            else
+            {
+                String login = campoUsuario.Text;
+                String senha = campoSenha.Text;
+                VendedorMySql vendedorMySql = new VendedorMySql();
+                if (vendedorMySql.VendedorEstaAutenticado(login, senha))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
         }
     }
 }

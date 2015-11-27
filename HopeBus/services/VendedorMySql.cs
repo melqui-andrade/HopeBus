@@ -113,7 +113,45 @@ namespace HopeBus.services
             }
         }
 
-        public void SalvaViagem(VendedorDomain vendedor)
+        public bool VendedorEstaAutenticado(String login, String senha)
+        {
+            using (MySqlConnection conexao = new MySqlConnection(stringDeConexao))
+            {
+                conexao.Open();
+                MySqlCommand comando = new MySqlCommand("SELECT * FROM vendedor WHERE login=@login AND senha=@senha;");
+                comando.Parameters.Add("login", login);
+                comando.Parameters.Add("senha", senha);
+                comando.Connection = conexao;
+                try
+                {
+                    MySqlDataReader reader = comando.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        VendedorDomain vendedor = new VendedorDomain(reader);
+                        if (vendedor.ID > 0)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.Error.WriteLine(e);
+                }
+                finally
+                {
+                    comando.Connection.Close();
+                    comando.Dispose();
+                }
+                return false;
+            }
+        }
+
+        public void SalvaVendedor(VendedorDomain vendedor)
         {
             using (MySqlConnection conexao = new MySqlConnection(stringDeConexao))
             {
@@ -187,33 +225,33 @@ namespace HopeBus.services
             }
         }
 
-        public void ExcluiVendedores()
-        {
-            using (MySqlConnection conexao = new MySqlConnection(stringDeConexao))
-            {
-                conexao.Open();
-                MySqlCommand comando = new MySqlCommand("SELECT * FROM vendedor;");
+        //public void ExcluiVendedores()
+        //{
+        //    using (MySqlConnection conexao = new MySqlConnection(stringDeConexao))
+        //    {
+        //        conexao.Open();
+        //        MySqlCommand comando = new MySqlCommand("SELECT * FROM vendedor;");
 
-                comando.Connection = conexao;
-                try
-                {
-                    MySqlDataReader reader = comando.ExecuteReader();
-                    StringBuilder querryDeletar = new StringBuilder();
-                    while (reader.Read())
-                    {
-                        querryDeletar.Append("DELETE FROM vendedor WHERE id=" + reader["id"] + ";");
-                    }
+        //        comando.Connection = conexao;
+        //        try
+        //        {
+        //            MySqlDataReader reader = comando.ExecuteReader();
+        //            StringBuilder querryDeletar = new StringBuilder();
+        //            while (reader.Read())
+        //            {
+        //                querryDeletar.Append("DELETE FROM vendedor WHERE id=" + reader["id"] + ";");
+        //            }
 
-                    comando.CommandText = querryDeletar.ToString();
-                    comando.ExecuteNonQuery();
+        //            comando.CommandText = querryDeletar.ToString();
+        //            comando.ExecuteNonQuery();
                     
-                }
-                catch (Exception e)
-                {
-                    Console.Error.WriteLine(e);
-                }
-                finally { comando.Connection.Close(); }
-            }
-        }
+        //        }
+        //        catch (Exception e)
+        //        {
+        //            Console.Error.WriteLine(e);
+        //        }
+        //        finally { comando.Connection.Close(); }
+        //    }
+        //}
     }
 }

@@ -126,17 +126,18 @@ namespace HopeBus.presentation.Vendedor.EmitirPassagem
 
         private bool formEstaOk()
         {
-            //Dados da viagem
-            StringBuilder mensagemErro = new StringBuilder();
+            //Dados da viagem            
             if (String.IsNullOrEmpty(comboBoxOrigem.Text) || String.IsNullOrEmpty(comboBoxDestino.Text) ||
                 String.IsNullOrEmpty(comboBoxHorario.Text))
             {
+                MessageBox.Show("Necessário definir: Origem, destino e horário da viagem", "Campos obrigatórios");
                 return false;
             }
             //Dados do passageiro
             else if (String.IsNullOrEmpty(campoNome.Text) || String.IsNullOrEmpty(campoCPF.Text) ||
                 String.IsNullOrEmpty(campoRG.Text))
             {
+                MessageBox.Show("Necessário preencher: Nome, CPF e RG do passageiro", "Campos obrigatórios");
                 return false;
             }
             //Poltrona
