@@ -57,8 +57,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="domain\ClienteDomain.cs" />
+    <Compile Include="services\ClientePassagemMySql.cs" />
     <Compile Include="domain\EnumTipo.cs" />
     <Compile Include="domain\PassagemDomain.cs" />
+    <Compile Include="services\PassagemViagemMySql.cs" />
     <Compile Include="domain\VendedorDomain.cs" />
     <Compile Include="domain\ViagemDomain.cs" />
     <Compile Include="presentation\index\CreditosView.cs">

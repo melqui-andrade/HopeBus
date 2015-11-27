@@ -26,12 +26,17 @@ namespace HopeBus.presentation.Vendedor.EmitirPassagem
 
         private void EmitirPassagemView_Load(object sender, EventArgs e)
         {
-            ViagemMySql viagemMySql = new ViagemMySql();
-            List<ViagemDomain> viagens = viagemMySql.ObtemViagens();
-            ajustaCamposDoTrajeto(viagens);            
-
+            limpaForm();
         }
 
+        private void ajustarCampoTipoPassagem()
+        {
+            comboBoxTipoDaPassagem.Items.Add(EnumTipo.Normal);
+            comboBoxTipoDaPassagem.Items.Add(EnumTipo.Estudante);
+            comboBoxTipoDaPassagem.Items.Add(EnumTipo.Idoso);
+            comboBoxTipoDaPassagem.Items.Add(EnumTipo.Deficiente);
+            comboBoxTipoDaPassagem.SelectedItem = 1;
+        }
 
         private void btnVoltar_Click(object sender, EventArgs e)
         {
@@ -41,24 +46,50 @@ namespace HopeBus.presentation.Vendedor.EmitirPassagem
             indexVendedorView.Show();
         }
 
-
         private void btnAvancar_Click(object sender, EventArgs e)
         {
-
-        }
-
-        private void ajustaCamposDoTrajeto(List<ViagemDomain> viagens)
-        {
-            if (viagens.Count > 0)
+            if (formEstaOk())
             {
-                foreach (ViagemDomain viagem in viagens)
+                int poltronaSelecionada = Convert.ToInt32(_ultimaPoltronaSelecionada);
+                if (poltronaSelecionada > 0)
                 {
-                    comboBoxOrigem.Items.Add(viagem.Origem);
-                    comboBoxDestino.Items.Add(viagem.Destino);
-                    comboBoxHorario.Items.Add(viagem.Horario.TimeOfDay);
+                    EnumTipo tipo = (EnumTipo)comboBoxTipoDaPassagem.SelectedItem;
+                    String origem = comboBoxOrigem.Text;
+                    String destino = comboBoxDestino.Text;
+                    String horario = comboBoxHorario.Text;
+
+                    String nome = campoNome.Text;
+                    String cpf = campoCPF.Text;
+                    String identidade = campoRG.Text;
+                    String telefone = campoTelefone.Text;
+                    StringBuilder dadosDaViagem = new StringBuilder();
+
+                    dadosDaViagem.Append("HopeBus Viação ltda \n\n");
+                    dadosDaViagem.Append("Dados da Viagem: \n\n");
+                    dadosDaViagem.Append(String.Format("Origem: {0}\n"+
+                                         "Destino: {1}\nHorario: {2}\n\n", origem, destino, horario));
+                    dadosDaViagem.Append("Cliente: " + nome);
+                    dadosDaViagem.Append("CPF: " + cpf + "\tRG: " + identidade);
+                    dadosDaViagem.Append("\n\n" + origem + ", ");
+                    dadosDaViagem.Append(String.Format("\n\n{0:hh:mm dd/MM/yyyy}", DateTime.Now));
+
+                    int idCliente = salvaCliente(tipo, nome, cpf, identidade, telefone);
+                    salvaPassagem(poltronaSelecionada, tipo, origem, destino, horario, idCliente);
+
+                    DialogResult result = MessageBox.Show(dadosDaViagem.ToString(),"Passagem emitida!");
+
+                    if (result == DialogResult.OK)
+                    {
+                        limpaForm();
+                    }
+
+                }
+                else
+                {
+                    MessageBox.Show("Necessário selecionar a poltrona do passageiro", "Campo Obrigatório");
                 }
             }
-        }        
+        }                
 
         private void comboBoxOrigem_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -82,6 +113,20 @@ namespace HopeBus.presentation.Vendedor.EmitirPassagem
                 {
                     comboBoxOrigem.SelectedIndex = i;
                     i--;
+                }
+            }
+            if (!String.IsNullOrEmpty(comboBoxOrigem.Text) && !String.IsNullOrEmpty(comboBoxDestino.Text))
+            {
+                ViagemMySql viagemMySql = new ViagemMySql();
+                List<ViagemDomain> viagens = viagemMySql.ObtemViagens();
+                comboBoxHorario.Items.Clear();
+                foreach (ViagemDomain viagem in viagens)
+                {
+                    if (viagem.Origem == comboBoxOrigem.Text && viagem.Destino == comboBoxDestino.Text)
+                    {
+                        comboBoxHorario.Items.Add(viagem.Horario.TimeOfDay);
+                        break;
+                    }
                 }
             }
         }
@@ -164,6 +209,89 @@ namespace HopeBus.presentation.Vendedor.EmitirPassagem
                 String numPoltrona = Convert.ToString(passagem.Poltrona);
                 Button poltrona = poltronas.Find(b => b.Text == numPoltrona);
                 poltrona.BackColor = _corOcupado;
+            }
+        }
+
+        private void limpaForm()
+        {
+            ViagemMySql viagemMySql = new ViagemMySql();
+            List<ViagemDomain> viagens = viagemMySql.ObtemViagens();
+
+            AbasEmitirPassagem.SelectedIndex = 0;
+            _ultimaPoltronaSelecionada = "0";
+            ajustaCamposDoTrajeto(viagens);
+            ajustarCampoTipoPassagem();
+
+            campoNome.Text = "";
+            campoRG.Text = "";
+            campoCPF.Text = "";
+            campoTelefone.Text = "";
+
+        }
+
+        private int salvaCliente(EnumTipo tipo, String nome, String cpf, String identidade, String telefone)
+        {
+            ClienteDomain cliente = new ClienteDomain();
+            cliente.Nome = nome;
+            cliente.CPF = cpf;
+            cliente.Identidade = identidade;
+            cliente.Telefone = telefone;
+            cliente.Tipo = tipo;
+
+            ClienteMySql clienteMySql = new ClienteMySql();
+            clienteMySql.SalvaCliente(cliente);
+            return cliente.ID;
+        }
+
+        private void salvaPassagem(int poltronaSelecionada, EnumTipo tipo, String origem, String destino, String horario, int idCliente)
+        {
+            PassagemDomain passagem = new PassagemDomain();
+            PassagemMySql passagemMySql = new PassagemMySql();
+            ViagemMySql viagemMySql = new ViagemMySql();
+            ViagemDomain viagem = viagemMySql.ObtemViagem(origem, destino, horario);
+
+            PassagemViagemMySql passagemViagemMySql = new PassagemViagemMySql();
+            ClientePassagemMySql clientePassagem = new ClientePassagemMySql();
+
+            passagem.Data = DateTime.Now;
+            passagem.Poltrona = poltronaSelecionada;
+            passagem.Valor = calculaValorDaPassagem(tipo);
+            passagemMySql.SalvaPassagem(passagem);
+
+            passagemViagemMySql.InserirRelacao(passagem.ID, viagem.ID);
+            clientePassagem.InserirRelacao(idCliente, passagem.ID);
+        }
+
+        private void ajustaCamposDoTrajeto(List<ViagemDomain> viagens)
+        {
+            if (viagens.Count > 0)
+            {
+                comboBoxDestino.Items.Clear();
+                comboBoxOrigem.Items.Clear();
+                comboBoxHorario.Items.Clear();
+                foreach (ViagemDomain viagem in viagens)
+                {
+                    comboBoxOrigem.Items.Add(viagem.Origem);
+                    comboBoxDestino.Items.Add(viagem.Destino);
+                    comboBoxHorario.Items.Add(viagem.Horario.TimeOfDay);
+                }
+            }
+        }
+
+        private double calculaValorDaPassagem(EnumTipo tipo)
+        {
+            switch (tipo)
+            {
+                case EnumTipo.Normal:
+                    return 4.2;
+                case EnumTipo.Estudante:
+                    return 2.1;
+                case EnumTipo.Idoso:
+                    return 0.0;
+                case EnumTipo.Deficiente:
+                    return 0.0;
+                default:
+                    return 4.2;
             }
         }
     }

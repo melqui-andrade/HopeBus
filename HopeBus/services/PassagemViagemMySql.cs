@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace HopeBus.domain
 {
-    class PassagemViagemMySql : MySqlBase
+    public class PassagemViagemMySql : MySqlBase
     {
         public void InserirRelacao(int idPassagem, int idViagem)
         {
@@ -16,7 +16,7 @@ namespace HopeBus.domain
             {
                 conexao.Open();
                 MySqlCommand comando = new MySqlCommand("INSERT INTO passagem_viagem(id_passagem,id_viagem)" +
-                "VALUES @id_passagem, @id_viagem;");
+                "VALUES(@id_passagem, @id_viagem);");
 
                 comando.Parameters.Add("id_passagem", idPassagem);
                 comando.Parameters.Add("id_viagem", idViagem);
