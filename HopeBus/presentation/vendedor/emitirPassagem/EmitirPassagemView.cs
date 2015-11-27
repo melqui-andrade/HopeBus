@@ -17,6 +17,8 @@ namespace HopeBus.presentation.Vendedor.EmitirPassagem
         Color _corLivre = Color.FromArgb(255, 39, 174, 97);
         Color _corOcupado = Color.FromArgb(255, 232, 76, 61);
         Color _corSelecionado = Color.FromArgb(255, 234, 156, 17);
+        Color _corIndisponivel = Color.FromArgb(255, 236, 240, 241);
+
         String _ultimaPoltronaSelecionada = "0";
 
         public EmitirPassagemView()
@@ -125,7 +127,6 @@ namespace HopeBus.presentation.Vendedor.EmitirPassagem
                     if (viagem.Origem == comboBoxOrigem.Text && viagem.Destino == comboBoxDestino.Text)
                     {
                         comboBoxHorario.Items.Add(viagem.Horario.TimeOfDay);
-                        break;
                     }
                 }
             }
@@ -226,6 +227,11 @@ namespace HopeBus.presentation.Vendedor.EmitirPassagem
             campoRG.Text = "";
             campoCPF.Text = "";
             campoTelefone.Text = "";
+
+            foreach (Button botao in panelPoltronas.Controls.Cast<Button>())
+            {
+                botao.BackColor = _corIndisponivel;
+            }
 
         }
 

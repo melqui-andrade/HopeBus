@@ -33,6 +33,7 @@ namespace HopeBus
             this.labelVendaDePassagensDeOnibus = new System.Windows.Forms.Label();
             this.labelHopeBus = new System.Windows.Forms.Label();
             this.panelBottom = new System.Windows.Forms.Panel();
+            this.labelMensagem = new System.Windows.Forms.Label();
             this.linkContato = new System.Windows.Forms.LinkLabel();
             this.iconSenha = new System.Windows.Forms.Label();
             this.iconUsuario = new System.Windows.Forms.Label();
@@ -42,7 +43,6 @@ namespace HopeBus
             this.campoSenha = new System.Windows.Forms.TextBox();
             this.campoUsuario = new System.Windows.Forms.TextBox();
             this.panelBackground = new System.Windows.Forms.Panel();
-            this.labelMensagem = new System.Windows.Forms.Label();
             this.panelTop.SuspendLayout();
             this.panelBottom.SuspendLayout();
             this.SuspendLayout();
@@ -102,6 +102,16 @@ namespace HopeBus
             this.panelBottom.Name = "panelBottom";
             this.panelBottom.Size = new System.Drawing.Size(1189, 419);
             this.panelBottom.TabIndex = 2;
+            // 
+            // labelMensagem
+            // 
+            this.labelMensagem.AutoSize = true;
+            this.labelMensagem.Font = new System.Drawing.Font("Segoe UI Symbol", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelMensagem.ForeColor = System.Drawing.Color.Red;
+            this.labelMensagem.Location = new System.Drawing.Point(455, 309);
+            this.labelMensagem.Name = "labelMensagem";
+            this.labelMensagem.Size = new System.Drawing.Size(0, 15);
+            this.labelMensagem.TabIndex = 9;
             // 
             // linkContato
             // 
@@ -192,6 +202,7 @@ namespace HopeBus
             this.campoSenha.PasswordChar = '*';
             this.campoSenha.Size = new System.Drawing.Size(259, 39);
             this.campoSenha.TabIndex = 1;
+            this.campoSenha.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.campoSenha_KeyPress);
             // 
             // campoUsuario
             // 
@@ -212,16 +223,6 @@ namespace HopeBus
             this.panelBackground.Name = "panelBackground";
             this.panelBackground.Size = new System.Drawing.Size(1184, 661);
             this.panelBackground.TabIndex = 2;
-            // 
-            // labelMensagem
-            // 
-            this.labelMensagem.AutoSize = true;
-            this.labelMensagem.Font = new System.Drawing.Font("Segoe UI Symbol", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelMensagem.ForeColor = System.Drawing.Color.Red;
-            this.labelMensagem.Location = new System.Drawing.Point(455, 309);
-            this.labelMensagem.Name = "labelMensagem";
-            this.labelMensagem.Size = new System.Drawing.Size(0, 15);
-            this.labelMensagem.TabIndex = 9;
             // 
             // LoginView
             // 

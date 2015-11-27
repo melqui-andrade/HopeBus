@@ -65,5 +65,13 @@ namespace HopeBus
                 }
             }
         }
+
+        private void campoSenha_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == '\r')
+            {
+                btnEntrar.PerformClick();
+            }
+        }        
     }
 }
