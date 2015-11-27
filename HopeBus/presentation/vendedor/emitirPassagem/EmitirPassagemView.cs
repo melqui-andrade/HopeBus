@@ -20,6 +20,7 @@ namespace HopeBus.presentation.Vendedor.EmitirPassagem
         Color _corIndisponivel = Color.FromArgb(255, 236, 240, 241);
 
         String _ultimaPoltronaSelecionada = "0";
+        int _tabSelecionada = 0;
 
         public EmitirPassagemView()
         {
@@ -50,45 +51,58 @@ namespace HopeBus.presentation.Vendedor.EmitirPassagem
 
         private void btnAvancar_Click(object sender, EventArgs e)
         {
-            if (formEstaOk())
+            _tabSelecionada = AbasEmitirPassagem.SelectedIndex;
+            if (_tabSelecionada < AbasEmitirPassagem.TabCount -2)
             {
-                int poltronaSelecionada = Convert.ToInt32(_ultimaPoltronaSelecionada);
-                if (poltronaSelecionada > 0)
+                btnAvancar.Text = "Avançar ";
+                AbasEmitirPassagem.SelectedIndex++;
+            }
+            else if(_tabSelecionada == AbasEmitirPassagem.TabCount -2)
+            {
+                btnAvancar.Text = "Concluir";
+                AbasEmitirPassagem.SelectedIndex++;
+            }
+            else{
+                if (formEstaOk())
                 {
-                    EnumTipo tipo = (EnumTipo)comboBoxTipoDaPassagem.SelectedItem;
-                    String origem = comboBoxOrigem.Text;
-                    String destino = comboBoxDestino.Text;
-                    String horario = comboBoxHorario.Text;
-
-                    String nome = campoNome.Text;
-                    String cpf = campoCPF.Text;
-                    String identidade = campoRG.Text;
-                    String telefone = campoTelefone.Text;
-                    StringBuilder dadosDaViagem = new StringBuilder();
-
-                    dadosDaViagem.Append("HopeBus Viação ltda \n\n");
-                    dadosDaViagem.Append("Dados da Viagem: \n\n");
-                    dadosDaViagem.Append(String.Format("Origem: {0}\n"+
-                                         "Destino: {1}\nHorario: {2}\n\n", origem, destino, horario));
-                    dadosDaViagem.Append("Cliente: " + nome);
-                    dadosDaViagem.Append("CPF: " + cpf + "\tRG: " + identidade);
-                    dadosDaViagem.Append("\n\n" + origem + ", ");
-                    dadosDaViagem.Append(String.Format("\n\n{0:hh:mm dd/MM/yyyy}", DateTime.Now));
-
-                    int idCliente = salvaCliente(tipo, nome, cpf, identidade, telefone);
-                    salvaPassagem(poltronaSelecionada, tipo, origem, destino, horario, idCliente);
-
-                    DialogResult result = MessageBox.Show(dadosDaViagem.ToString(),"Passagem emitida!");
-
-                    if (result == DialogResult.OK)
+                    int poltronaSelecionada = Convert.ToInt32(_ultimaPoltronaSelecionada);
+                    if (poltronaSelecionada > 0)
                     {
-                        limpaForm();
-                    }
+                        EnumTipo tipo = (EnumTipo)comboBoxTipoDaPassagem.SelectedItem;
+                        String origem = comboBoxOrigem.Text;
+                        String destino = comboBoxDestino.Text;
+                        String horario = comboBoxHorario.Text;
 
-                }
-                else
-                {
-                    MessageBox.Show("Necessário selecionar a poltrona do passageiro", "Campo Obrigatório");
+                        String nome = campoNome.Text;
+                        String cpf = campoCPF.Text;
+                        String identidade = campoRG.Text;
+                        String telefone = campoTelefone.Text;
+                        StringBuilder dadosDaViagem = new StringBuilder();
+
+                        dadosDaViagem.Append("HopeBus Viação ltda \n\n");
+                        dadosDaViagem.Append("Dados da Viagem: \n\n");
+                        dadosDaViagem.Append(String.Format("Origem: {0}\n" +
+                                             "Destino: {1}\nHorario: {2}\n\n", origem, destino, horario));
+                        dadosDaViagem.Append("Cliente: " + nome);
+                        dadosDaViagem.Append("CPF: " + cpf + "\tRG: " + identidade);
+                        dadosDaViagem.Append("\n\n" + origem + ", ");
+                        dadosDaViagem.Append(String.Format("\n\n{0:hh:mm dd/MM/yyyy}", DateTime.Now));
+
+                        int idCliente = salvaCliente(tipo, nome, cpf, identidade, telefone);
+                        salvaPassagem(poltronaSelecionada, tipo, origem, destino, horario, idCliente);
+
+                        DialogResult result = MessageBox.Show(dadosDaViagem.ToString(), "Passagem emitida!");
+
+                        if (result == DialogResult.OK)
+                        {
+                            limpaForm();
+                        }
+
+                    }
+                    else
+                    {
+                        MessageBox.Show("Necessário selecionar a poltrona do passageiro", "Campo Obrigatório");
+                    }
                 }
             }
         }                
@@ -227,6 +241,8 @@ namespace HopeBus.presentation.Vendedor.EmitirPassagem
             campoRG.Text = "";
             campoCPF.Text = "";
             campoTelefone.Text = "";
+
+            btnAvancar.Text = "Avançar ";
 
             foreach (Button botao in panelPoltronas.Controls.Cast<Button>())
             {
