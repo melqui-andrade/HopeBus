@@ -43,26 +43,47 @@ namespace HopeBus.presentation.Vendedor.EmitirPassagem
 
         private void btnVoltar_Click(object sender, EventArgs e)
         {
-            IndexVendedorView indexVendedorView = new IndexVendedorView();
-            this.Hide();
-            indexVendedorView.Closed += (s, args) => this.Close();
-            indexVendedorView.Show();
+
+            _tabSelecionada = AbasEmitirPassagem.SelectedIndex;
+            if (_tabSelecionada == 1 || _tabSelecionada == 2)
+            {
+                btnVoltar.Text = " Voltar";
+                btnAvancar.Text = "Avançar ";
+                AbasEmitirPassagem.SelectedIndex--;
+            }
+            else { 
+                AbasEmitirPassagem.SelectedIndex = 0;
+                IndexVendedorView indexVendedorView = new IndexVendedorView();
+                this.Hide();
+                indexVendedorView.Closed += (s, args) => this.Close();
+                indexVendedorView.WindowState = this.WindowState;
+
+                indexVendedorView.Show();
+            }
+
+
+          
+
+
+
+
         }
 
         private void btnAvancar_Click(object sender, EventArgs e)
         {
             _tabSelecionada = AbasEmitirPassagem.SelectedIndex;
-            if (_tabSelecionada < AbasEmitirPassagem.TabCount -2)
+            if (_tabSelecionada < AbasEmitirPassagem.TabCount - 2)
             {
                 btnAvancar.Text = "Avançar ";
                 AbasEmitirPassagem.SelectedIndex++;
             }
-            else if(_tabSelecionada == AbasEmitirPassagem.TabCount -2)
+            else if (_tabSelecionada == AbasEmitirPassagem.TabCount - 2)
             {
                 btnAvancar.Text = "Concluir";
                 AbasEmitirPassagem.SelectedIndex++;
             }
-            else{
+            else
+            {
                 if (formEstaOk())
                 {
                     int poltronaSelecionada = Convert.ToInt32(_ultimaPoltronaSelecionada);
@@ -79,12 +100,12 @@ namespace HopeBus.presentation.Vendedor.EmitirPassagem
                         String telefone = campoTelefone.Text;
                         StringBuilder dadosDaViagem = new StringBuilder();
 
-                        dadosDaViagem.Append("HopeBus Viação ltda \n\n");
+                        dadosDaViagem.Append("Venda de Passagens de Ônibus \n\n");
                         dadosDaViagem.Append("Dados da Viagem: \n\n");
                         dadosDaViagem.Append(String.Format("Origem: {0}\n" +
                                              "Destino: {1}\nHorario: {2}\n\n", origem, destino, horario));
                         dadosDaViagem.Append("Cliente: " + nome);
-                        dadosDaViagem.Append("CPF: " + cpf + "\tRG: " + identidade);
+                        dadosDaViagem.Append("\nCPF: " + cpf + "\tRG: " + identidade);
                         dadosDaViagem.Append("\n\n" + origem + ", ");
                         dadosDaViagem.Append(String.Format("\n\n{0:hh:mm dd/MM/yyyy}", DateTime.Now));
 
@@ -105,7 +126,7 @@ namespace HopeBus.presentation.Vendedor.EmitirPassagem
                     }
                 }
             }
-        }                
+        }
 
         private void comboBoxOrigem_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -178,7 +199,7 @@ namespace HopeBus.presentation.Vendedor.EmitirPassagem
                     if (viagem != null && viagem.ID > 0)
                     {
                         List<PassagemDomain> passagensCompradas = passagemMySql.BuscaPassagensDaViagem(viagem.ID);
-                        ajustaCoresDasPoltronas(passagensCompradas);    
+                        ajustaCoresDasPoltronas(passagensCompradas);
                     }
                 }
             }
@@ -209,10 +230,10 @@ namespace HopeBus.presentation.Vendedor.EmitirPassagem
         {
             int i = 1;
             List<Button> poltronas = panelPoltronas.Controls.Cast<Button>().OrderBy(b => b.Right).ToList();
-            
+
 
             foreach (Button control in poltronas)
-            {                
+            {
                 Button poltrona = (Button)control;
                 poltrona.Text = Convert.ToString(i);
                 poltrona.BackColor = _corLivre;

@@ -105,6 +105,7 @@ namespace HopeBus
             // 
             // labelMensagem
             // 
+            this.labelMensagem.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.labelMensagem.AutoSize = true;
             this.labelMensagem.Font = new System.Drawing.Font("Segoe UI Symbol", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelMensagem.ForeColor = System.Drawing.Color.Red;

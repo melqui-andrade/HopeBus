@@ -28,6 +28,7 @@ namespace HopeBus
                 IndexVendedorView indexVendedorView = new IndexVendedorView();
                 this.Hide();
                 indexVendedorView.Closed += (s, args) => this.Close();
+                indexVendedorView.WindowState = this.WindowState;
                 indexVendedorView.Show();
             }
             else
@@ -41,6 +42,7 @@ namespace HopeBus
             CreditosView creditosView = new CreditosView();
             this.Hide();
             creditosView.Closed += (s, args) => this.Close();
+            creditosView.WindowState = this.WindowState;
             creditosView.Show();
         }
 

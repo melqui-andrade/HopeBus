@@ -1,4 +1,5 @@
-﻿using HopeBus.presentation.Vendedor.AlterarAgendamentoDoEmbarque;
+﻿using HopeBus.presentation.vendedor.consultarAgendamento;
+using HopeBus.presentation.Vendedor.consultarAgendamentoView;
 using HopeBus.presentation.Vendedor.EmitirPassagem;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,8 @@ namespace HopeBus.presentation.Vendedor
         {
             LoginView loginView = new LoginView();
             this.Hide();
-            loginView.Closed += (s, args) => this.Close(); 
+            loginView.Closed += (s, args) => this.Close();
+            loginView.WindowState = this.WindowState;
             loginView.Show();
 
 
@@ -34,6 +36,8 @@ namespace HopeBus.presentation.Vendedor
             EmitirPassagemView emitirPassagemView = new EmitirPassagemView();
             this.Hide();
             emitirPassagemView.Closed += (s, args) => this.Close();
+            emitirPassagemView.WindowState = this.WindowState;
+
             emitirPassagemView.Show();
         }
 
@@ -42,12 +46,18 @@ namespace HopeBus.presentation.Vendedor
             AlterarAgendamentoPesquisarView alterarAgendamentoView = new AlterarAgendamentoPesquisarView();
             this.Hide();
             alterarAgendamentoView.Closed += (s, args) => this.Close();
+            alterarAgendamentoView.WindowState = this.WindowState;
+
             alterarAgendamentoView.Show();
         }
 
         private void btnConsultarAgendamento_Click(object sender, EventArgs e)
         {
-
+            ConsultarAgendamentoView consultarAgendamentoView = new ConsultarAgendamentoView();
+            this.Hide();
+            consultarAgendamentoView.Closed += (s, args) => this.Close();
+            consultarAgendamentoView.WindowState = this.WindowState;
+            consultarAgendamentoView.Show();
         }
     }
 }

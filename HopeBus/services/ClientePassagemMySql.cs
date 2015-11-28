@@ -60,5 +60,37 @@ namespace HopeBus.domain
                 finally { comando.Connection.Close(); }
             }
         }
+
+        public List<Agendamento> ObtemAgendamentos()
+        {
+            using (MySqlConnection conexao = new MySqlConnection(stringDeConexao))
+            {
+                conexao.Open();
+                MySqlCommand comando = new MySqlCommand("select p.data, c.nome, c.identidade, v.origem, v.destino, v.horario from passagem p inner join cliente_passagem cp on cp.id_passagem = p.id inner join cliente c on c.id = cp.id_cliente inner join viagem v inner join passagem_viagem pv on v.id = pv.id_viagem");
+                comando.Connection = conexao;
+                try
+                {
+                    MySqlDataReader reader = comando.ExecuteReader();
+                    List<Agendamento> agendamentos = new List<Agendamento>();
+                    
+                    while (reader.Read())
+                    {
+                        Agendamento agendamento = new Agendamento(reader);
+                        agendamentos.Add(agendamento);
+                    }
+                    return agendamentos;
+                }
+                catch (Exception e)
+                {
+                    Console.Error.WriteLine(e);
+                }
+                finally
+                {
+                    comando.Connection.Close();
+                }
+                return null;
+            }
+        }
+
     }
 }

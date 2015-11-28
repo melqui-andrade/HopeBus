@@ -56,7 +56,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="domain\Agendamento.cs" />
     <Compile Include="domain\ClienteDomain.cs" />
+    <Compile Include="presentation\vendedor\consultarAgendamento\ConsultarAgendamentoView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="presentation\vendedor\consultarAgendamento\ConsultarAgendamentoView.Designer.cs">
+      <DependentUpon>ConsultarAgendamentoView.cs</DependentUpon>
+    </Compile>
     <Compile Include="services\ClientePassagemMySql.cs" />
     <Compile Include="domain\EnumTipo.cs" />
     <Compile Include="domain\PassagemDomain.cs" />
@@ -108,6 +115,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="presentation\vendedor\alterarAgendamentoDoEmbarque\AlterarAgendamentoPesquisarView.resx">
       <DependentUpon>AlterarAgendamentoPesquisarView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="presentation\vendedor\consultarAgendamento\ConsultarAgendamentoView.resx">
+      <DependentUpon>ConsultarAgendamentoView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="presentation\vendedor\emitirPassagem\EmitirPassagemView.resx">
       <DependentUpon>EmitirPassagemView.cs</DependentUpon>
