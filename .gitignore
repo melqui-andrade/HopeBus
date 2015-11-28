@@ -179,3 +179,12 @@ $RECYCLE.BIN/
  
 # Visual Studio 2014 CTP
 **/*.sln.ide
+packages/MySql.Data.6.9.8/CHANGES
+packages/MySql.Data.6.9.8/MySql.Data.6.9.8.nupkg
+packages/MySql.Data.6.9.8/Readme.txt
+packages/MySql.Data.6.9.8/content/app.config.transform
+packages/MySql.Data.6.9.8/content/web.config.transform
+packages/MySql.Data.6.9.8/lib/net20-cf/MySql.Data.CF.dll
+packages/MySql.Data.6.9.8/lib/net20/MySql.Data.dll
+packages/MySql.Data.6.9.8/lib/net40/MySql.Data.dll
+packages/MySql.Data.6.9.8/lib/net45/MySql.Data.dll
