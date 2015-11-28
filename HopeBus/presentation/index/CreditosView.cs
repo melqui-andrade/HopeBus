@@ -22,6 +22,7 @@ namespace HopeBus.presentation.index
             LoginView loginView = new LoginView();
             this.Hide();
             loginView.Closed += (s, args) => this.Close();
+            loginView.WindowState = this.WindowState;
             loginView.Show();
         }
     }

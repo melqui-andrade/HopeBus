@@ -43,8 +43,8 @@
             this.iconCancelarEmbarque = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.panelBottom = new System.Windows.Forms.Panel();
-            this.panelBackground = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
+            this.panelBackground = new System.Windows.Forms.Panel();
             this.panelTop.SuspendLayout();
             this.panelBottom.SuspendLayout();
             this.panelBackground.SuspendLayout();
@@ -120,6 +120,7 @@
             this.btnConsultarAgendamento.TabIndex = 2;
             this.btnConsultarAgendamento.Text = "Consultar Agendamento";
             this.btnConsultarAgendamento.UseVisualStyleBackColor = false;
+            this.btnConsultarAgendamento.Click += new System.EventHandler(this.btnConsultarAgendamento_Click);
             // 
             // btnCancelarEmbarque
             // 
@@ -243,15 +244,6 @@
             this.panelBottom.Size = new System.Drawing.Size(1189, 564);
             this.panelBottom.TabIndex = 4;
             // 
-            // panelBackground
-            // 
-            this.panelBackground.Controls.Add(this.panelTop);
-            this.panelBackground.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelBackground.Location = new System.Drawing.Point(0, 0);
-            this.panelBackground.Name = "panelBackground";
-            this.panelBackground.Size = new System.Drawing.Size(1184, 661);
-            this.panelBackground.TabIndex = 15;
-            // 
             // label2
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -264,6 +256,15 @@
             this.label2.TabIndex = 15;
             this.label2.Text = "HopeBus - Venda de Passagens de Ônibus Ⓡ Daniel Marques. Melquisedec Andrade, Sid" +
     "ney Pimentel";
+            // 
+            // panelBackground
+            // 
+            this.panelBackground.Controls.Add(this.panelTop);
+            this.panelBackground.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelBackground.Location = new System.Drawing.Point(0, 0);
+            this.panelBackground.Name = "panelBackground";
+            this.panelBackground.Size = new System.Drawing.Size(1184, 661);
+            this.panelBackground.TabIndex = 15;
             // 
             // IndexVendedorView
             // 
