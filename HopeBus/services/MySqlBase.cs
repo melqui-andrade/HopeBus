@@ -9,9 +9,9 @@ namespace HopeBus.services
     public abstract class MySqlBase
     {
         //String de conexão de Melqui
-        public String stringDeConexao = "server=localhost;user id=root;database=hope_bus;password=root";
+        protected String stringDeConexao = "server=localhost;user id=root;database=hope_bus;password=root";
 
         //String de conexão de Sidney
-        //public String stringDeConexao = "server=localhost;user id=SEU_ID;database=hope_bus;password=SEU_PASS";
+        //protected String stringDeConexao = "server=localhost;user id=SEU_ID;database=hope_bus;password=SEU_PASS";
     }
 }

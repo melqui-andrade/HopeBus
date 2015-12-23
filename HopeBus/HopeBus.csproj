@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="business\ClienteBusiness.cs" />
+    <Compile Include="business\PassagemBusiness.cs" />
     <Compile Include="business\VendedorBusiness.cs" />
     <Compile Include="domain\Agendamento.cs" />
     <Compile Include="domain\ClienteDomain.cs" />

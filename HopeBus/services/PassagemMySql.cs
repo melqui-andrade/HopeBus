@@ -75,7 +75,7 @@ namespace HopeBus.services
         /// </summary>
         /// <param name="parametro">Texto que deseja procurar</param>
         /// <returns>Lista de passagens que satisfaçam a busca</returns>
-        public List<ViagemDomain> BuscaPassagens(String parametro)
+        public List<PassagemDomain> BuscaPassagens(String parametro)
         {
             using (MySqlConnection conexao = new MySqlConnection(stringDeConexao))
             {
@@ -103,13 +103,13 @@ namespace HopeBus.services
                 try
                 {
                     MySqlDataReader reader = comando.ExecuteReader();
-                    List<ViagemDomain> viagens = new List<ViagemDomain>();
+                    List<PassagemDomain> passagens = new List<PassagemDomain>();
                     while (reader.Read())
                     {
-                        ViagemDomain viagem = new ViagemDomain(reader);
-                        viagens.Add(viagem);
+                        PassagemDomain passagem = new PassagemDomain(reader);
+                        passagens.Add(passagem);
                     }
-                    return viagens;
+                    return passagens;
                 }
                 catch (Exception e)
                 {

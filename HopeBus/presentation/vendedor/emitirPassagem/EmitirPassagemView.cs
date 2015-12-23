@@ -34,6 +34,7 @@ namespace HopeBus.presentation.Vendedor.EmitirPassagem
 
         private void ajustarCampoTipoPassagem()
         {
+            comboBoxTipoDaPassagem.Items.Clear();
             comboBoxTipoDaPassagem.Items.Add(EnumTipo.Normal);
             comboBoxTipoDaPassagem.Items.Add(EnumTipo.Estudante);
             comboBoxTipoDaPassagem.Items.Add(EnumTipo.Idoso);

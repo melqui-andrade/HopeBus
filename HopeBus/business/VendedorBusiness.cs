@@ -17,27 +17,27 @@ namespace HopeBus.business
             _vendedorMySql = new VendedorMySql();
         }
 
-        public bool vendedorAutenticado(String nome, String senha)
+        public bool VendedorAutenticado(String nome, String senha)
         {            
             return _vendedorMySql.VendedorEstaAutenticado(nome, senha);            
         }
 
-        public VendedorDomain obtemVendedor(int id)
+        public VendedorDomain ObtemVendedor(int id)
         {
             return _vendedorMySql.ObtemVendedor(id);
         }
 
-        public List<VendedorDomain> listaVendedores()
+        public List<VendedorDomain> ListaVendedores()
         {            
             return _vendedorMySql.ObtemVendedores();
         }
 
-        public List<VendedorDomain> buscaVendedores(String parametro)
+        public List<VendedorDomain> BuscaVendedores(String parametro)
         {
             return _vendedorMySql.BuscaVendedores(parametro);
         }
 
-        public void salvaVendedor(String nome, String cpf, String identidade, String login, String senha, String cep, String endereco)
+        public void SalvaVendedor(String nome, String cpf, String identidade, String login, String senha, String cep, String endereco)
         {
             VendedorDomain vendedor = new VendedorDomain();
             vendedor.Nome = nome;
@@ -51,7 +51,7 @@ namespace HopeBus.business
             _vendedorMySql.SalvaVendedor(vendedor);
         }        
 
-        public void excluiVendedor(int id)
+        public void ExcluiVendedor(int id)
         {            
             _vendedorMySql.ExcluiVendedor(id);
         }

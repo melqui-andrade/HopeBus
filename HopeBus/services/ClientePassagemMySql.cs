@@ -61,6 +61,29 @@ namespace HopeBus.domain
             }
         }
 
+        public void ExcluiRelacao(int idPassagem)
+        {
+            using(MySqlConnection conexao = new MySqlConnection(stringDeConexao))
+            {
+                conexao.Open();
+
+                MySqlCommand comando = new MySqlCommand("DELETE FROM cliente_passagem WHERE " +
+                "id_passagem=@id_passagem;");
+                
+                comando.Parameters.Add("id_passagem", idPassagem);
+
+                try
+                {
+                    comando.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    Console.Error.WriteLine(e);
+                }
+                finally { comando.Connection.Close(); }
+            }
+        }
+
         public List<Agendamento> ObtemAgendamentos()
         {
             using (MySqlConnection conexao = new MySqlConnection(stringDeConexao))
